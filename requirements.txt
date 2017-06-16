@@ -1,4 +1,0 @@
-Flask
-sqlalcheme
-ipython
-flask-sqlalchemy

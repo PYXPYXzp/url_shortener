@@ -3,7 +3,7 @@ from werkzeug.exceptions import NotFound
 from url_shortener import app, db
 from flask import render_template, request, redirect
 import urlparse
-from url_shortener.models import Url
+from models import Url
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -26,10 +26,14 @@ def is_valid_url(url):
 
 
 def insert_url(url):
-    url_exist = Url.query.filter_by(url=url)
-    if url_exist.first() is not None:
-        return url_exist.first().short_url
-    url_num = Url.query.order_by('-id').first().id + 1
+    url_exist = Url.query.filter_by(url=url).first()
+    if url_exist is not None:
+        return url_exist.short_url
+    url_num = Url.query.order_by('-id').first()
+    if url_num is None:
+        url_num = 1
+    else:
+        url_num = Url.query.order_by('-id').first().id + 1
     short_url = base36_encode(url_num)
     urls = Url(url=url, short_url=short_url)
     db.session.add(urls)
@@ -48,9 +52,9 @@ def base36_encode(number):
     return ''.join(reversed(base36))
 
 
-@app.route('/<id>')
-def short_link_details(id):
-    link_target = Url.query.get(id)
+@app.route('/<short_url>')
+def short_link_details(short_url):
+    link_target = Url.query.filter_by(short_url=short_url).first()
     if link_target is None:
         raise Exception("Url doesn't exist")
     return render_template('short_link_details.html',
@@ -60,8 +64,8 @@ def short_link_details(id):
 
 @app.route('/<short_url>+')
 def follow_short_link(short_url):
-    link = Url.query.filter_by(short_url=short_url)
+    link = Url.query.filter_by(short_url=short_url).first()
     if link is None:
         raise NotFound()
-    return redirect(link[0].url)
+    return redirect(link.url)
     pass

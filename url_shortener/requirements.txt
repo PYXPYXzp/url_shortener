@@ -1,0 +1,6 @@
+Flask==0.12.2
+Flask-SQLAlchemy==2.2
+ipython==5.4.1
+SQLAlchemy==1.1.10
+psycopg2
+Flask-Migrate
