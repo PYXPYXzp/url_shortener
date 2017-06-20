@@ -9,7 +9,7 @@ app.config.from_object('config')
 app.config[
     'SQLALCHEMY_DATABASE_URI'
 # ] = 'postgresql://root:root@172.17.0.3/postgres'
-] = 'postgresql://docker:docker@172.17.0.3/url_postgres'
+] = 'postgresql://root:root@172.17.0.3/url_postgres'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
