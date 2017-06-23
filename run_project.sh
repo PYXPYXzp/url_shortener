@@ -10,6 +10,6 @@ cd ..
 #build and run database
 cd postgresql
 docker build -t pyxpyx/url_db .
-ocker run -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root --name url_db -v /home/user/project/url_shortener/run_times/postgres:/var/lib/postgresql/data --link "$container_id":pyxpyx/url_db -d postgres
+docker run -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root --name url_db -v /home/user/project/url_shortener/run_times/postgres:/var/lib/postgresql/data --link "$container_id":pyxpyx/url_db -d postgres
 
 
